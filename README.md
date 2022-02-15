@@ -978,3 +978,21 @@ end
 
 -- load
 venyx:SelectPage(venyx.pages[1], true)
+
+section1:addToggle("Fast Attack",_G.FastAttak,function(vu)
+  _G.FastAttack = vu
+end)
+
+local Fast = require(game.Players.LocalPlayer.PlayerScripts.CombatFramework)
+local CameraShaker = require(game.Players.LocalPlayer.PlayerScripts.CombatFramework.CameraShaker)
+
+spawn(function()
+  game.RunService.RenderStepped:Connect(function()
+    if _G.FastAttack then
+      Fast.activeController.timeToNextAttack = 0
+      game:GetService('VirtualUser'):CaptureController()
+      game:GetService('VirtualUser'):Button1Down(Vector2.new(686, 352))
+      CameraShaker.CameraShakeInstance.CameraShakeState = {FadingIn = 3, FadingOut = 2, Sustained = 0, Inactive = 1}
+    end
+  end)
+end) 
